@@ -1,10 +1,9 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_udemy_examples/screens/home_screen.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-//AIzaSyD5LpGGAoh1dvIwHIdWZTsFTG2waTfPUWk
+//AIzaSyD5LpGGAoh1dvIwHIdWZTsFTG2waTfPUWk//API KEY
 
 class MapScreen extends StatefulWidget {
   MapScreen({Key? key}) : super(key: key);
@@ -34,13 +33,9 @@ class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          leading: RotatedBox(
-            quarterTurns: 1,
-            child: _buildExitButton(context),
-          ),
-        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.startDocked,
+        floatingActionButton: Padding(
+            padding: EdgeInsets.fromLTRB(5, 0, 5, 25), child: _buildFAB()),
         body: FutureBuilder(
           future: getStartingPosition(),
           builder: (context, snapshot) {
@@ -54,6 +49,26 @@ class _MapScreenState extends State<MapScreen> {
             }
           },
         ));
+  }
+}
+
+class _buildFAB extends StatelessWidget {
+  const _buildFAB({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () async => Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (BuildContext context) => HomeScreen(),
+        ),
+      ),
+      child:
+          RotatedBox(quarterTurns: 1, child: Icon(Icons.expand_more_outlined)),
+    );
   }
 }
 
@@ -78,14 +93,4 @@ class MapBuilder extends StatelessWidget {
       ),
     );
   }
-}
-
-Widget _buildExitButton(BuildContext context) {
-  return IconButton(
-    icon: Icon(Icons.expand_more_outlined),
-    onPressed: () async {
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (BuildContext context) => HomeScreen()));
-    },
-  );
 }

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_udemy_examples/screens/home_screen.dart';
-import 'home_screen.dart';
 
 class DetailScreen extends StatefulWidget {
   final String locationNameDetailScreen;
@@ -26,7 +24,7 @@ class _DetailScreenState extends State<DetailScreen> {
             GestureDetector(
               onTap: () => Navigator.pop(context),
               child: SizedBox(
-                  child: Image.asset(widget.locationImagePathDetailScreen)),
+                  child: Image.network(widget.locationImagePathDetailScreen)),
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -41,7 +39,7 @@ class _DetailScreenState extends State<DetailScreen> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          widget.locationNameDetailScreen,
+                          widget.locationNameDetailScreen.toString(),
                           style: TextStyle(
                               fontSize: 25,
                               decoration: TextDecoration.underline),
@@ -67,7 +65,7 @@ class _DetailScreenState extends State<DetailScreen> {
                     ),
                   ),
                   Text(
-                    HomeScreenState().listLocation[0].name,
+                    widget.locationNameDetailScreen.toString(),
                   ),
                 ],
               ),

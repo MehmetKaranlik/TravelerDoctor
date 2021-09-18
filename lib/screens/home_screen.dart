@@ -1,14 +1,16 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_udemy_examples/http_api_data/get_location_data_final.dart';
 import 'package:flutter_udemy_examples/http_api_data/get_location_names.dart';
 import 'package:flutter_udemy_examples/screens/login_ekrani.dart';
-import 'package:flutter_udemy_examples/model/travel_country_model.dart';
 import 'package:flutter_udemy_examples/screens/map_screen.dart';
 import 'login_ekrani.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../banner.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
+
+import 'package:flutter_udemy_examples/http_api_data/get_location_images.dart';
 
 // ignore: must_be_immutable
 class HomeScreen extends StatefulWidget {
@@ -17,45 +19,43 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
-  List<TravelCountryModel> listLocation = [
-    TravelCountryModel("", "assets/mount_fuji.jpg", "historyExplanation")
-  ];
+  LocationDataFinal? locationSuggestion;
 
   bool isLoading = true;
-  late String data;
-
   @override
   void initState() {
     super.initState();
     asyncInitState();
   }
 
+  Future<void> asyncInitState() async {
+    await fecthlocationData();
+  }
+
   Future fecthlocationData() async {
     var locations = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,
-      //timeLimit: Duration(seconds: 15),
-      //forceAndroidLocationManager: true,
     );
 
     final double enlem = locations.latitude;
     final double boylam = locations.longitude;
-    print('enlem ' + enlem.toString());
-    print('boylam ' + boylam.toString());
-    var url = Uri.parse(
-        "https://en.wikipedia.org/w/api.php?action=query&format=json&list=geosearch&gscoord=${enlem}%7C${boylam}&gsradius=10000&gslimit=100");
-
-    var answer = await http.get(url);
-    //Map response = json.decode(answer.body);
-
-    print("$answer");
-    setState(() {
-      isLoading = false;
-    });
-    return LocationInformation.fromJson(jsonDecode(answer.body));
-  }
-
-  Future<void> asyncInitState() async {
-    fecthlocationData();
+    final url = Uri.parse(
+        "https://en.wikipedia.org/w/api.php?action=query&format=json&prop=coordinates%7Cpageimages%7Cdescription%7Cextracts&generator=geosearch&piprop=original&descprefersource=central&exlimit=20&exintro=1&explaintext=1&exsectionformat=plain&ggscoord=${enlem}%7C${boylam}&ggsradius=10000");
+    print(url);
+    final response = await http.get(url);
+    //print(response.body);
+    if (response.statusCode == 200) {
+      locationSuggestion = await locationDataFinalFromJson(response.body);
+      if (locationSuggestion != null) {
+        setState(() {
+          isLoading = false;
+        });
+      } else {
+        print("null aq");
+      }
+    } else {
+      print("null");
+    }
   }
 
   @override
@@ -63,27 +63,49 @@ class HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: _buildAppBar(context),
-      body: FutureBuilder(
-        future: asyncInitState(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return ListView.builder(
-              itemCount: 5,
-              itemBuilder: (BuildContext context, int index) {
-                return MyBanner(
-                  locationName: LocationInformation().query.geosearch[0].title,
-                  imagePath: listLocation[0].listImagePath,
-                  context: context,
-                );
-              },
-            );
-          } else {
-            return Center(
+      body: isLoading
+          ? Center(
               child: CircularProgressIndicator(),
-            );
-          }
-        },
-      ),
+            )
+          : ListView(
+              children: [
+                MyBanner(
+                  // info: locationSuggestion!.query.pages[0]!.description,
+                  locationName: locationSuggestion!.query.pages[0]!.title,
+                  imagePath:
+                      locationSuggestion!.query.pages[0]!.original.source,
+                  context: context,
+                ),
+                MyBanner(
+                  //info: locationSuggestion!.query.pages[1]!.description,
+                  locationName: locationSuggestion!.query.pages[1]!.title,
+                  imagePath:
+                      locationSuggestion!.query.pages[1]!.original.source,
+                  context: context,
+                ),
+                MyBanner(
+                  //  info: locationSuggestion!.query.pages[2]!.description,
+                  locationName: locationSuggestion!.query.pages[2]!.title,
+                  imagePath:
+                      locationSuggestion!.query.pages[2]!.original.source,
+                  context: context,
+                ),
+                MyBanner(
+                  //  info: locationSuggestion!.query.pages[3]!.description,
+                  locationName: locationSuggestion!.query.pages[3]!.title,
+                  imagePath:
+                      locationSuggestion!.query.pages[3]!.original.source,
+                  context: context,
+                ),
+                MyBanner(
+                  //  info: locationSuggestion!.query.pages[4]!.description,
+                  locationName: locationSuggestion!.query.pages[4]!.title,
+                  imagePath:
+                      locationSuggestion!.query.pages[4]!.original.source,
+                  context: context,
+                ),
+              ],
+            ),
     );
   }
 
@@ -149,3 +171,6 @@ Widget _buildExitButton(BuildContext context) {
     tooltip: "Exit",
   );
 }
+
+
+//https://en.wikipedia.org/w/api.php?action=query&format=json&prop=pageimages&list=&titles=Googleplex&VirtualPBX&Bridge%20School%20Benefit&formatversion=2&piprop=original

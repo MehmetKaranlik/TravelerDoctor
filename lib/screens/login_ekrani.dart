@@ -55,8 +55,6 @@ class LoginEkraniState extends State<LoginEkrani> {
   void initState() {
     super.initState();
     kurulum();
-    //checkLogin();
-    //checkLogin();
   }
 
   /*Future<void> checkLogin() async {
@@ -91,6 +89,7 @@ class LoginEkraniState extends State<LoginEkrani> {
   void showSnackbar(BuildContext context, {String? message}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
+        duration: Duration(seconds: 1),
         elevation: 100,
         backgroundColor: Colors.white,
         content: Container(

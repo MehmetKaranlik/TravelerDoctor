@@ -6,11 +6,14 @@ class MyBanner extends StatelessWidget {
   final String imagePath;
   final BuildContext context;
 
-  MyBanner(
-      {required this.locationName,
-      required this.imagePath,
-      required this.context})
-      : super();
+  //final String info;
+
+  MyBanner({
+    //required this.info,
+    required this.locationName,
+    required this.imagePath,
+    required this.context,
+  }) : super();
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +50,7 @@ class MyBanner extends StatelessWidget {
                   image: DecorationImage(
                     scale: 4.0,
                     fit: BoxFit.fitWidth,
-                    image: AssetImage(imagePath),
+                    image: NetworkImage(imagePath),
                   ),
                 ),
               ),
@@ -56,14 +59,14 @@ class MyBanner extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    locationName,
+                    locationName.toString(),
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 16,
                         fontStyle: FontStyle.italic),
                   ),
                   Text(
-                    DateTime.now().toString(),
+                    locationName.toString(),
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 14,
