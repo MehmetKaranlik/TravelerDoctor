@@ -28,11 +28,11 @@ class Query {
     required this.pages,
   });
 
-  Map<dynamic, Page> pages;
+  Map<String, Page> pages;
 
-  factory Query.fromJson(Map<dynamic, dynamic> json) => Query(
+  factory Query.fromJson(Map<String, dynamic> json) => Query(
         pages: Map.from(json["pages"])
-            .map((k, v) => MapEntry<dynamic, Page>(k, Page.fromJson(v))),
+            .map((k, v) => MapEntry<String, Page>(k, Page.fromJson(v))),
       );
 }
 
@@ -73,7 +73,7 @@ class Page {
                 width: 300,
                 height: 200)
             : Original.fromJson(json["original"]),
-        description: json["description"] == null ? "asd" : json["description"],
+        description: json["description"] == null ? " " : json["description"],
         descriptionsource:
             json["descriptionsource"] == null ? " " : json["descriptionsource"],
         extract: json["extract"],

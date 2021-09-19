@@ -3,16 +3,18 @@ import 'screens/detail_screen.dart';
 
 class MyBanner extends StatelessWidget {
   final String locationName;
+  final String explanation;
   final String imagePath;
   final BuildContext context;
 
-  //final String info;
+  final String info;
 
   MyBanner({
-    //required this.info,
+    required this.info,
     required this.locationName,
     required this.imagePath,
     required this.context,
+    required this.explanation,
   }) : super();
 
   @override
@@ -24,7 +26,8 @@ class MyBanner extends StatelessWidget {
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => DetailScreen(locationName, imagePath),
+          builder: (context) =>
+              DetailScreen(locationName, imagePath, explanation),
         ),
       ),
       child: SizedBox(
@@ -66,7 +69,7 @@ class MyBanner extends StatelessWidget {
                         fontStyle: FontStyle.italic),
                   ),
                   Text(
-                    locationName.toString(),
+                    info,
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 14,

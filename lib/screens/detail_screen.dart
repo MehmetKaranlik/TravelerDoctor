@@ -6,9 +6,8 @@ class DetailScreen extends StatefulWidget {
   final String? locationHistoryExplanation;
   @override
   _DetailScreenState createState() => _DetailScreenState();
-  DetailScreen(
-      this.locationNameDetailScreen, this.locationImagePathDetailScreen,
-      {this.locationHistoryExplanation});
+  DetailScreen(this.locationNameDetailScreen,
+      this.locationImagePathDetailScreen, this.locationHistoryExplanation);
 }
 
 class _DetailScreenState extends State<DetailScreen> {
@@ -65,7 +64,7 @@ class _DetailScreenState extends State<DetailScreen> {
                     ),
                   ),
                   Text(
-                    widget.locationNameDetailScreen.toString(),
+                    widget.locationHistoryExplanation.toString(),
                   ),
                 ],
               ),

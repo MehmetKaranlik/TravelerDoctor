@@ -1,7 +1,5 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_udemy_examples/http_api_data/get_location_data_final.dart';
-import 'package:flutter_udemy_examples/http_api_data/get_location_names.dart';
 import 'package:flutter_udemy_examples/screens/login_ekrani.dart';
 import 'package:flutter_udemy_examples/screens/map_screen.dart';
 import 'login_ekrani.dart';
@@ -9,8 +7,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../banner.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
-
-import 'package:flutter_udemy_examples/http_api_data/get_location_images.dart';
 
 // ignore: must_be_immutable
 class HomeScreen extends StatefulWidget {
@@ -44,8 +40,11 @@ class HomeScreenState extends State<HomeScreen> {
     print(url);
     final response = await http.get(url);
     //print(response.body);
+    print(response.body);
+
     if (response.statusCode == 200) {
       locationSuggestion = await locationDataFinalFromJson(response.body);
+
       if (locationSuggestion != null) {
         setState(() {
           isLoading = false;
@@ -70,38 +69,78 @@ class HomeScreenState extends State<HomeScreen> {
           : ListView(
               children: [
                 MyBanner(
-                  // info: locationSuggestion!.query.pages[0]!.description,
-                  locationName: locationSuggestion!.query.pages[0]!.title,
-                  imagePath:
-                      locationSuggestion!.query.pages[0]!.original.source,
+                  explanation: locationSuggestion!.query.pages.values
+                      .elementAt(0)
+                      .extract,
+                  info: locationSuggestion!.query.pages.values
+                      .elementAt(0)
+                      .description,
+                  locationName:
+                      locationSuggestion!.query.pages.values.elementAt(0).title,
+                  imagePath: locationSuggestion!.query.pages.values
+                      .elementAt(0)
+                      .original
+                      .source,
                   context: context,
                 ),
                 MyBanner(
-                  //info: locationSuggestion!.query.pages[1]!.description,
-                  locationName: locationSuggestion!.query.pages[1]!.title,
-                  imagePath:
-                      locationSuggestion!.query.pages[1]!.original.source,
+                  explanation: locationSuggestion!.query.pages.values
+                      .elementAt(1)
+                      .extract,
+                  info: locationSuggestion!.query.pages.values
+                      .elementAt(1)
+                      .description,
+                  locationName:
+                      locationSuggestion!.query.pages.values.elementAt(1).title,
+                  imagePath: locationSuggestion!.query.pages.values
+                      .elementAt(1)
+                      .original
+                      .source,
                   context: context,
                 ),
                 MyBanner(
-                  //  info: locationSuggestion!.query.pages[2]!.description,
-                  locationName: locationSuggestion!.query.pages[2]!.title,
-                  imagePath:
-                      locationSuggestion!.query.pages[2]!.original.source,
+                  explanation: locationSuggestion!.query.pages.values
+                      .elementAt(2)
+                      .extract,
+                  info: locationSuggestion!.query.pages.values
+                      .elementAt(2)
+                      .description,
+                  locationName:
+                      locationSuggestion!.query.pages.values.elementAt(2).title,
+                  imagePath: locationSuggestion!.query.pages.values
+                      .elementAt(2)
+                      .original
+                      .source,
                   context: context,
                 ),
                 MyBanner(
-                  //  info: locationSuggestion!.query.pages[3]!.description,
-                  locationName: locationSuggestion!.query.pages[3]!.title,
-                  imagePath:
-                      locationSuggestion!.query.pages[3]!.original.source,
+                  explanation: locationSuggestion!.query.pages.values
+                      .elementAt(3)
+                      .extract,
+                  info: locationSuggestion!.query.pages.values
+                      .elementAt(3)
+                      .description,
+                  locationName:
+                      locationSuggestion!.query.pages.values.elementAt(3).title,
+                  imagePath: locationSuggestion!.query.pages.values
+                      .elementAt(3)
+                      .original
+                      .source,
                   context: context,
                 ),
                 MyBanner(
-                  //  info: locationSuggestion!.query.pages[4]!.description,
-                  locationName: locationSuggestion!.query.pages[4]!.title,
-                  imagePath:
-                      locationSuggestion!.query.pages[4]!.original.source,
+                  explanation: locationSuggestion!.query.pages.values
+                      .elementAt(4)
+                      .extract,
+                  info: locationSuggestion!.query.pages.values
+                      .elementAt(4)
+                      .description,
+                  locationName:
+                      locationSuggestion!.query.pages.values.elementAt(4).title,
+                  imagePath: locationSuggestion!.query.pages.values
+                      .elementAt(4)
+                      .original
+                      .source,
                   context: context,
                 ),
               ],
